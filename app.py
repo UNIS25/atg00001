@@ -271,23 +271,23 @@ if st.session_state.page == "Contact":
     st.markdown("<h2>Contact Us</h2><p>For inquiries, reach out to:</p><p><strong>Email:</strong> <a href='mailto:adrian.vasuveluppillai@un.org'>adrian.vasuveluppillai@un.org</a></p>", unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-st.markdown("""
-<!-- Dialogflow Messenger -->
-<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-<df-messenger
-  intent="WELCOME"
-  chat-title="ATGtest01"
-  agent-id="0001190c-56d5-4596-8075-b0322e6c9322"
-  language-code="en">
-</df-messenger>
+import streamlit.components.v1 as components
 
-<style>
-  df-messenger {
-    z-index: 999;
-    position: fixed;
-    bottom: 16px;
-    right: 16px;
-  }
-</style>
-""", unsafe_allow_html=True)
+components.html("""
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+  <df-messenger
+    intent="WELCOME"
+    chat-title="ATGtest01"
+    agent-id="0001190c-56d5-4596-8075-b0322e6c9322"
+    language-code="en">
+  </df-messenger>
 
+  <style>
+    df-messenger {
+      z-index: 999;
+      position: fixed;
+      bottom: 16px;
+      right: 16px;
+    }
+  </style>
+""", height=500)
