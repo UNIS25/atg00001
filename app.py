@@ -273,21 +273,9 @@ if st.session_state.page == "Contact":
 
 import streamlit.components.v1 as components
 
-components.html("""
-  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-  <df-messenger
-    intent="WELCOME"
-    chat-title="ATGtest01"
-    agent-id="0001190c-56d5-4596-8075-b0322e6c9322"
-    language-code="en">
-  </df-messenger>
+with open("chatbot.html", "r") as f:
+    html_code = f.read()
 
-  <style>
-    df-messenger {
-      z-index: 999;
-      position: fixed;
-      bottom: 16px;
-      right: 16px;
-    }
-  </style>
-""", height=500)
+components.html(html_code, height=600, width=400)
+
+
