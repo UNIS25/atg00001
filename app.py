@@ -271,34 +271,23 @@ if st.session_state.page == "Contact":
     st.markdown("<h2>Contact Us</h2><p>For inquiries, reach out to:</p><p><strong>Email:</strong> <a href='mailto:adrian.vasuveluppillai@un.org'>adrian.vasuveluppillai@un.org</a></p>", unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-if st.session_state.page == "Weekly Report":
-    st.markdown("""
-    <!-- Load Dialogflow Messenger -->
-    <link rel="stylesheet" href="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/themes/df-messenger-default.css">
-    <script src="https://www.gstatic.com/dialogflow-console/fast/df-messenger/prod/v1/df-messenger.js"></script>
+st.markdown("""
+<!-- Dialogflow Messenger -->
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="ATG712"
+  agent-id="able2d46-89c7-4e28-97a5-97d48b0c39a2"
+  language-code="en">
+</df-messenger>
 
-    <df-messenger
-      project-id="logical-bolt-440322-t3"
-      agent-id="766b2ca0-e72e-45c5-9f61-41b97bd69fbb"
-      language-code="en"
-      max-query-length="-1">
-      <df-messenger-chat-bubble
-        chat-title="ATG WEEKLY REPORT CHAT">
-      </df-messenger-chat-bubble>
-    </df-messenger>
-
-    <style>
-      df-messenger {
-        z-index: 999;
-        position: fixed;
-        --df-messenger-font-color: #000;
-        --df-messenger-font-family: Google Sans;
-        --df-messenger-chat-background: #f3f6fc;
-        --df-messenger-message-user-background: #d3e3fd;
-        --df-messenger-message-bot-background: #fff;
-        bottom: 16px;
-        right: 16px;
-      }
-    </style>
-    """, unsafe_allow_html=True)
+<style>
+  df-messenger {
+    z-index: 999;
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+  }
+</style>
+""", unsafe_allow_html=True)
 
