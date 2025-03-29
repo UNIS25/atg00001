@@ -272,22 +272,14 @@ if st.session_state.page == "Contact":
     st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("""
-    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
-    <df-messenger
-      intent="WELCOME"
-      chat-title="ATGtest01"
-      agent-id="0001190c-56d5-4596-8075-b0322e6c9322"
-      language-code="en">
-    </df-messenger>
-
-    <style>
-    df-messenger {
-      position: fixed !important;
-      bottom: 20px !important;
-      right: 20px !important;
-      z-index: 999 !important;
-    }
-    </style>
+    <br><br>
+    <h4>Need help?</h4>
+    <a href="https://unis25.github.io/atg00001/chatbot.html" target="_blank">
+        <button style="font-size:18px;padding:12px 24px;background-color:#0072C6;color:white;border:none;border-radius:8px;cursor:pointer;">
+            💬 Open Chatbot
+        </button>
+    </a>
 """, unsafe_allow_html=True)
+
 
 
