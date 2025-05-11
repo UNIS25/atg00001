@@ -1,28 +1,20 @@
 import streamlit as st
 import pandas as pd
+from docx import Document
+from io import BytesIO
 
-# Set up page configuration
 st.set_page_config(page_title="United Nations Information Services Digitalization Project", layout="wide")
 
-# UN branding
 UN_LOGO = "https://logowik.com/content/uploads/images/un-united-nations3511.logowik.com.webp"
 
-# Ensure session state for page navigation
 if "page" not in st.session_state:
     st.session_state.page = "Home"
 
-# Custom styling for UN Blue background, black content box, and white text
-# Custom styling for UN Blue background and white text
-st.markdown(
-    """
+st.markdown("""
     <style>
-        /* Set full page background to UN Blue */
         body, .stApp {
             background-color: #009EDB !important;
-            color: black !important;  /* Change text color to black */
         }
-
-        /* Keep header white */
         .header {
             display: flex;
             align-items: center;
@@ -33,90 +25,49 @@ st.markdown(
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             color: black !important;
         }
-
         .header img {
             width: 240px;
             margin-right: 20px;
         }
-
         .header-content {
             display: flex;
             flex-direction: column;
             justify-content: center;
             color: black !important;
         }
-
         .header-text {
             font-size: 28px;
             font-weight: bold;
             text-align: left;
-            color: black !important;
         }
-
         .tagline {
             font-size: 18px;
             font-weight: bold;
-            color: black !important;  /* Ensure tagline is black */
             text-align: left;
         }
-
         .developer {
             font-size: 12px;
-            color: black !important;
             margin-top: 5px;
         }
-
-        /* Navigation bar remains blue */
-        .nav-bar {
-            display: flex;
-            justify-content: start;
-            background-color: #0072C6 !important;
-            padding: 10px 20px;
-        }
-
-        .nav-button {
-            font-size: 18px;
-            padding: 12px 30px;
-            border: 2px solid white;
-            background: none;
-            color: white !important;
-            cursor: pointer;
-            transition: background 0.3s, color 0.3s;
-            margin: 0 5px;
-        }
-        .nav-button:hover {
-            background-color: white !important;
-            color: #0072C6 !important;
-        }
-
-        /* Make content sections UN Blue */
         .container {
             text-align: center;
             padding: 50px;
             background-color: #009EDB !important;
-            color: black !important;  /* Change content text color to black */
+            color: yellow !important;
             border-radius: 10px;
             width: 80%;
             margin: auto;
         }
-
-        /* Make section headings and text black */
-        h2, h3, h4, h5, h6, p {
+        h2, h3, h4, h5, h6, p, .stMarkdown a {
+            color: yellow !important;
+        }
+        .st-emotion-cache-10trblm, .st-emotion-cache-1v0mbdj p, .stMarkdown p {
             color: black !important;
         }
-
-        a {
-            color: #0072C6 !important; /* UN Blue links */
-        }
-
     </style>
-    """,
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
-# Header Section
-st.markdown(
-    f"""
+st.markdown(f"""
     <div class="header">
         <img src="{UN_LOGO}" alt="UN Logo">
         <div class="header-content">
@@ -125,36 +76,26 @@ st.markdown(
             <div class="developer">Developed by ATG</div>
         </div>
     </div>
-    """,
-    unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
-
-# Add the black box wrapper for navigation
-st.markdown('<div class="black-box">', unsafe_allow_html=True)
-
-# Navigation Bar inside black box
 selected_page = st.radio("", ["Home", "Weekly Report", "Contact"], horizontal=True)
-
-# Close the black box
-st.markdown('</div>', unsafe_allow_html=True)
-
-# Set page session
 st.session_state.page = selected_page
 
-# Home Page
 if st.session_state.page == "Home":
-    st.markdown('<div class="content-box">', unsafe_allow_html=True)
-    st.markdown("<h2>Welcome to the Digital Future</h2><p>Explore the power of digital transformation in streamlining UN documentation.</p>", unsafe_allow_html=True)
+    st.markdown('<div class="container">', unsafe_allow_html=True)
+    st.markdown("""
+        <h2>Welcome to the Digital Future</h2>
+        <p>Explore the power of digital transformation in streamlining UN documentation.</p>
+        <p><strong>Discover UN BRAIN</strong> — our new initiative to build secure, sovereign, AI-powered tools for the United Nations, developed with digital independence in mind.</p>
+        <p>Click below to read more about this innovation:</p>
+        <p><a href="https://www.linkedin.com/posts/adrian-veluppillai-312550199_aiforgood-untech-digitalsovereignty-activity-7325115202822180864-fdez?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC6IYr4B2nyUuSXe8V1doalv1dOuh5TOe6s" target="_blank">🔗 Click here for more information</a></p>
+        <img src="https://media.licdn.com/dms/image/v2/D4E22AQEYBf9eJQRjww/feedshare-shrink_2048_1536/B4EZagJdJ.HIAw-/0/1746443556142?e=1749686400&v=beta&t=50wrYQoEe6bpxZxBZU3_YYT5oMhdfFeuAMxs44aqgJM" width="80%">
+    """, unsafe_allow_html=True)
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Weekly Report Page
 elif st.session_state.page == "Weekly Report":
     st.markdown("<div class='container'><h2>Weekly Report</h2><p>Upload your files and analyze engagement data.</p></div>", unsafe_allow_html=True)
 
-    import pandas as pd
-
-    # Function to read uploaded files
     def read_file(uploaded_file, platform=None):
         if uploaded_file.name.endswith(".csv"):
             return pd.read_csv(uploaded_file)
@@ -166,7 +107,6 @@ elif st.session_state.page == "Weekly Report":
             st.error("Unsupported file format. Upload .csv, .xls, or .xlsx files.")
             return None
 
-    # Function to dynamically detect column names
     def map_columns(df, column_map):
         new_mapping = {}
         for key, value in column_map.items():
@@ -177,15 +117,12 @@ elif st.session_state.page == "Weekly Report":
                     break
         return new_mapping
 
-    # Platform processing function
     def process_platform(df, platform, cols_map, engagement_cols, start_date, end_date):
         cols_map = map_columns(df, cols_map)
         df_selected = df[list(cols_map.keys())].rename(columns=cols_map)
         df_selected['Date'] = pd.to_datetime(df_selected['Date'], errors='coerce')
-
         start_date = pd.to_datetime(start_date)
         end_date = pd.to_datetime(end_date)
-
         df_selected = df_selected[(df_selected['Date'] >= start_date) & (df_selected['Date'] <= end_date)]
         df_selected['Engagements'] = df_selected[engagement_cols].sum(axis=1)
         df_selected = df_selected.sort_values(by='Engagements', ascending=False).head(3)
@@ -194,22 +131,18 @@ elif st.session_state.page == "Weekly Report":
         df_selected['Date'] = df_selected['Date'].dt.strftime('%m/%d/%Y')
         return df_selected[["Platform", "Rank", "Date", "Post text", "Link", "Impressions", "Engagements", "Reactions", "Comments", "Shares"]]
 
-    # Streamlit app
-    st.title('📊 Social Media Engagement Report')
-
-    # Date range selection
     st.sidebar.header("Select Date Range")
     start_date = st.sidebar.date_input("Start date")
     end_date = st.sidebar.date_input("End date")
 
     processing_functions = {
-        "X English": lambda df: process_platform(df, "X English", {
-            "Date": "Date", "Post text": "Post text", "Link": "Link", "Impressions": "Impressions",
+        "X English": lambda df: process_platform(df.rename(columns={"Link": "Post Link"}), "X English", {
+            "Date": "Date", "Post text": "Post text", "Post Link": "Link", "Impressions": "Impressions",
             "Engagements": "Engagements", "Likes": "Reactions", "Replies": "Comments", "Reposts": "Shares"
         }, ["Engagements"], start_date, end_date),
 
-        "X French": lambda df: process_platform(df, "X French", {
-            "Date": "Date", "Texte du post": "Post text", "Lien": "Link", "Impressions": "Impressions",
+        "X French": lambda df: process_platform(df.rename(columns={"Lien": "Lien du post"}), "X French", {
+            "Date": "Date", "Texte du post": "Post text", "Lien du post": "Link", "Impressions": "Impressions",
             "Engagements": "Engagements", "J'aime": "Reactions", "Réponses": "Comments", "Reposts": "Shares"
         }, ["Engagements"], start_date, end_date),
 
@@ -232,7 +165,6 @@ elif st.session_state.page == "Weekly Report":
     }
 
     platform_dfs = {}
-
     for platform in processing_functions:
         uploaded_file = st.file_uploader(f'Upload file for {platform}', type=['csv', 'xls', 'xlsx'], key=platform)
         if uploaded_file:
@@ -244,7 +176,6 @@ elif st.session_state.page == "Weekly Report":
                 st.dataframe(platform_df)
                 st.markdown('---')
 
-    # ✅ FIXED INDENTATION ISSUE HERE
     if platform_dfs:
         combined_df = pd.concat(platform_dfs.values(), ignore_index=True)
         st.write("### Combined Top Posts Report")
@@ -254,32 +185,36 @@ elif st.session_state.page == "Weekly Report":
         with open("final_social_report.xlsx", "rb") as f:
             st.download_button("Download Excel Report", f, "Social_Media_Report.xlsx")
 
-        # Extract the links from the final report
-        post_links = combined_df["Link"].dropna().unique()
-
-        # Display the "Open Tabs" button
         if st.button("Open Tabs"):
             st.markdown("### Click below to open each post:")
-            for link in post_links:
-                st.markdown(f"- [Open Post]({link})", unsafe_allow_html=True)
+            for idx, row in combined_df.iterrows():
+                platform = row["Platform"]
+                rank = row["Rank"]
+                link = row["Link"]
+                st.markdown(f"- [{platform} Rank {rank} Post]({link})", unsafe_allow_html=True)
 
-    else:
-        st.info("Please upload files for each platform to generate the report.")
+        if st.button("Generate Word Report"):
+            doc = Document()
+            doc.add_heading('Weekly Social Media Performance Report', level=1)
+            doc.add_heading('1. Summary', level=2)
+            doc.add_paragraph("This report highlights the top-performing posts across social media platforms. The analysis includes engagement metrics, impressions, and trends.")
+            combined_df["Date"] = pd.to_datetime(combined_df["Date"], errors='coerce').dt.strftime("%d/%m/%Y")
+
+            for platform in combined_df["Platform"].unique():
+                doc.add_heading(f'Top Posts - {platform}', level=2)
+                platform_df = combined_df[combined_df["Platform"] == platform].nlargest(3, 'Engagements')
+                for idx, row in platform_df.iterrows():
+                    doc.add_paragraph(f"{idx+1}. {row['Post text']}", style="List Bullet")
+                    doc.add_paragraph(f"- Date: {row['Date']}\n")
+                    doc.add_paragraph(f"- Impressions: {row['Impressions']}\n")
+                    doc.add_paragraph(f"- Engagements: {row['Engagements']}\n")
+                    doc.add_paragraph(f"- Reactions: {row['Reactions']} | Comments: {row['Comments']} | Shares: {row['Shares']}\n")
+                    doc.add_paragraph(f"- View Post: {row['Link']}\n")
+
+            word_buffer = BytesIO()
+            doc.save(word_buffer)
+            word_buffer.seek(0)
+            st.download_button("Download Word Report", word_buffer, file_name="Weekly_Social_Media_Report.docx")
 
 if st.session_state.page == "Contact":
-    st.markdown('<div class="content-box">', unsafe_allow_html=True)
-    st.markdown("<h2>Contact Us</h2><p>For inquiries, reach out to:</p><p><strong>Email:</strong> <a href='mailto:adrian.vasuveluppillai@un.org'>adrian.vasuveluppillai@un.org</a></p>", unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
-
-st.markdown("""
-    <br><br>
-    <h4>Need help?</h4>
-    <a href="https://unis25.github.io/atg00001/chatbot.html" target="_blank">
-        <button style="font-size:18px;padding:12px 24px;background-color:#0072C6;color:white;border:none;border-radius:8px;cursor:pointer;">
-            💬 Open Chatbot
-        </button>
-    </a>
-""", unsafe_allow_html=True)
-
-
-
+    st.markdown('<div class="container"><h2>Contact Us</h2><p>For inquiries, reach out to:</p><p><strong>Email:</strong> <a href="mailto:adrian.vasuveluppillai@un.org">adrian.vasuveluppillai@un.org</a></p></div>', unsafe_allow_html=True)
